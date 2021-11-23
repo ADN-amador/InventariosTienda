@@ -17,7 +17,7 @@
         <title>Vendedores</title>
         <style>            
             /*button{height: 50px; width: 75px;}*/   
-            div{border:dotted;}            
+            /*div{border:dotted;}*/            
             li:hover{background-color: #1a1d20;}            
         </style>
     </head>
@@ -27,7 +27,7 @@
         <div class="container-fluid" ng-app="vendedores" ng-controller="vendedoresController as vc">
             <div class="row">
                 <div class="col-6">
-                    Seccion 1
+                    <!--Seccion 1-->
                     <div class="row">
                         <div class="col-6">
                             <label>IdVendedor</label>
@@ -43,7 +43,8 @@
                         <label>Teléfono</label>
                             <input class="form-control" type="text" placeholder="Teléfono" ng-model="vc.telefono">
                         </div>
-                    </div>                    
+                    </div> 
+                    <br>
                     <div class="row">
                         <div class="col-3">
                             <button type="button" class="btn btn-outline-success" ng-click="vc.guardar()">Guardar</button>
@@ -58,9 +59,10 @@
                             <button type="button" class="btn btn-outline-danger" ng-click="vc.eliminar()">Eliminar</button>
                         </div>
                     </div>
+                    <br>
                 </div>
                 <div class="col-6">
-                    Seccion 2
+                    <!--Seccion 2-->
                     <div class="row">
                         <div class="col-6">
                             <label>IdVendedor</label>
@@ -81,7 +83,7 @@
             </div>
             <div class="row">
                 <div class="col-12">
-                    Seccion 3 - Tabla
+                    <!--Seccion 3 - Tabla-->
                     <table class="table table-dark">
                         <thead>
                             <tr>
@@ -92,12 +94,12 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="a in vc.Vendedores">
-                                <td>{{a.idVendedor}}</td>
-                                <td>{{a.nombre}}</td>
-                                <td>{{a.telefono}}</td>                              
+                            <tr ng-repeat="v in vc.Vendedores">
+                                <td>{{v.idVendedor}}</td>
+                                <td>{{v.nombre}}</td>
+                                <td>{{v.telefono}}</td>                              
                                 <td>
-                                    <button type="button" class="btn btn-outline-info" ng-click="ac.editar(a.idVendedor)">Editar</button>
+                                    <button type="button" class="btn btn-outline-info" ng-click="vc.editar(v.idVendedor)">Editar</button>
                                 </td>
                             </tr>                         
                         </tbody>
@@ -121,7 +123,89 @@
                     }).then(function (res) {
                         vc.Vendedores = res.data.Vendedores;
                     });
-                };               
+                };
+                vc.guardar = function () {
+                    var parametros = {
+                        proceso: 'guardar',
+                        idVendedor: vc.idVendedor,
+                        nombre: vc.nombre,
+                        telefono: vc.telefono                        
+                    };
+                    $http({
+                        method: 'POST',
+                        url: 'peticionesVendedor.jsp',
+                        params: parametros
+                    }).then(function (res) {
+                        if (res.data.ok === true) {
+                            if (res.data.guardar === true) {
+                                alert('Guardó');
+                            } else {
+                                alert('No Guardó');
+                            }
+                        } else {
+                            alert(res.data.errorMsg);
+                        }
+                    });
+                };
+                vc.actualizar = function () {
+                    var parametros = {
+                        proceso: 'actualizar',
+                        idVendedor: vc.idVendedor,
+                        nombre: vc.nombre,
+                        telefono: vc.telefono                        
+                    };
+                    $http({
+                        method: 'POST',
+                        url: 'peticionesVendedor.jsp',
+                        params: parametros
+                    }).then(function (res) {
+                        if (res.data.ok === true) {
+                            if (res.data.actualizar === true) {
+                                alert('Actualizó');
+                            } else {
+                                alert('No Actualizó');
+                            }
+                        } else {
+                            alert(res.data.errorMsg);
+                        }
+                    });
+                };
+                vc.eliminar = function () {
+                    var parametros = {
+                        proceso: 'eliminar',
+                        idVendedor: vc.idVendedor
+                    };
+                    $http({
+                        method: 'POST',
+                        url: 'peticionesVendedor.jsp',
+                        params: parametros
+                    }).then(function (res) {
+                        if (res.data.ok === true) {
+                            if (res.data.eliminar === true) {
+                                alert('Eliminó');
+                            } else {
+                                alert('No Eliminó');
+                            }
+                        } else {
+                            alert(res.data.errorMsg);
+                        }
+                    });
+                };
+                vc.editar = function (idv) {
+                    var parametros = {
+                        proceso: 'consultarIndividual',
+                        idVendedor: idv
+                    };
+                    $http({
+                        method: 'POST',
+                        url: 'peticionesVendedor.jsp',
+                        params: parametros
+                    }).then(function (res) {
+                        vc.idVendedor = res.data.Vendedor.idVendedor;
+                        vc.nombre = res.data.Vendedor.nombre;
+                        vc.telefono = res.data.Vendedor.telefono;                       
+                    });
+                };
             }
         </script>
     </body>

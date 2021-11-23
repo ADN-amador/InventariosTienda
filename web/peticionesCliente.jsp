@@ -71,9 +71,9 @@
            //creación de objeto y llamado al metodo listar
             try {
                 List<Cliente> lista = new Cliente().consultarClientes();
-                respuesta += "\"" + proceso + "\": true,\"NombreLista\":" + new Gson().toJson(lista);
+                respuesta += "\"" + proceso + "\": true,\"Clientes\":" + new Gson().toJson(lista);
             } catch (Exception ex) {
-                respuesta += "\"" + proceso + "\": true,\"NombreLista\":[]";
+                respuesta += "\"" + proceso + "\": true,\"Clientes\":[]";
                 Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else if (proceso.equals("consultarIndividual")) {
