@@ -19,6 +19,7 @@
             /*button{height: 50px; width: 75px;}*/
             .col-12{background: #FFFCF0;}
             .form-control{height: 38px; width: 150px;}
+            li:hover{background-color: #1a1d20;}
         </style>
     </head>
     <body>

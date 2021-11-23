@@ -73,9 +73,9 @@
            //creación de objeto y llamado al metodo listar
             try {
                 List<Producto> lista = new Producto().consultarProductos();
-                respuesta += "\"" + proceso + "\": true,\"NombreLista\":" + new Gson().toJson(lista);
+                respuesta += "\"" + proceso + "\": true,\"Productos\":" + new Gson().toJson(lista);
             } catch (Exception ex) {
-                respuesta += "\"" + proceso + "\": true,\"NombreLista\":[]";
+                respuesta += "\"" + proceso + "\": true,\"Productos\":[]";
                 Logger.getLogger(Producto.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else if (proceso.equals("consultarIndividual")) {
