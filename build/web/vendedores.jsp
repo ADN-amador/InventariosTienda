@@ -4,6 +4,7 @@
     Author     : Usuario
 --%>
 
+<%@page import="logica.Vendedor"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -18,13 +19,23 @@
         <style>            
             /*button{height: 50px; width: 75px;}*/   
             /*div{border:dotted;}*/            
-            li:hover{background-color: #1a1d20;}            
+            li:hover{background-color: #1a1d20;}             
         </style>
     </head>
     <body>
+        <%
+            Vendedor v = (Vendedor) session.getAttribute("usr");
+            if (v != null) {
+        %>
         <jsp:include page="menu.jsp"/>
-        <h1>Vendedores</h1>
+        <!--<h1>Vendedores</h1>-->
         <div class="container-fluid" ng-app="vendedores" ng-controller="vendedoresController as vc">
+            <div class="row mt-2">
+                <div class="col-10">Bienvenido/a: <%=v.getUsuario()%></div>
+                <div class="col-2">
+                    <button type="button" class="btn btn-outline-danger btn-block" ng-click="vc.cerrarSesion()">Cerrar sesión</button>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-6">
                     <!--Seccion 1-->
@@ -40,7 +51,7 @@
                     </div>
                     <div class="row">                       
                         <div class="col-6">
-                        <label>Teléfono</label>
+                            <label>Teléfono</label>
                             <input class="form-control" type="text" placeholder="Teléfono" ng-model="vc.telefono">
                         </div>
                     </div> 
@@ -69,13 +80,13 @@
                             <input class="form-control" type="text" disabled="" value="{{vc.idVendedor}}">
                         </div>
                         <div class="col-6">
-                        <label>Nombre</label>
+                            <label>Nombre</label>
                             <input class="form-control" type="text" disabled="" value="{{vc.nombre}}">
                         </div>
                     </div>
                     <div class="row">                       
                         <div class="col-6">
-                        <label>Teléfono</label>
+                            <label>Teléfono</label>
                             <input class="form-control" type="text" disabled="" value="{{vc.telefono}}">
                         </div>
                     </div>                  
@@ -112,7 +123,7 @@
             app.controller('vendedoresController', ['$http', controladorVendedores]);
             function controladorVendedores($http) {
                 var vc = this;
-                vc.listar = function () {               
+                vc.listar = function () {
                     var parametros = {
                         proceso: 'listar'
                     };
@@ -129,7 +140,7 @@
                         proceso: 'guardar',
                         idVendedor: vc.idVendedor,
                         nombre: vc.nombre,
-                        telefono: vc.telefono                        
+                        telefono: vc.telefono
                     };
                     $http({
                         method: 'POST',
@@ -152,7 +163,7 @@
                         proceso: 'actualizar',
                         idVendedor: vc.idVendedor,
                         nombre: vc.nombre,
-                        telefono: vc.telefono                        
+                        telefono: vc.telefono
                     };
                     $http({
                         method: 'POST',
@@ -203,10 +214,29 @@
                     }).then(function (res) {
                         vc.idVendedor = res.data.Vendedor.idVendedor;
                         vc.nombre = res.data.Vendedor.nombre;
-                        vc.telefono = res.data.Vendedor.telefono;                       
+                        vc.telefono = res.data.Vendedor.telefono;
+                    });
+                };
+                vc.cerrarSesion = function () {
+                    var parametros = {
+                        proceso: 'cerrarSesion'
+                    };
+                    $http({
+                        method: 'POST',
+                        url: 'peticionesVendedor.jsp',
+                        params: parametros
+                    }).then(function (res) {
+                        if (res.data.ok === true) {
+                            window.location.href = "vendedores.jsp";
+                        } else {
+                            alert(res.data.errorMsg);
+                        }
                     });
                 };
             }
         </script>
-    </body>
+        <%} else {%>
+    <center><a href="index.jsp">No se ha iniciado sesión o la sesión caducó, click acá para ingresar</a></center>
+        <%}%>
+</body>
 </html>
