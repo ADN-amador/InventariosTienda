@@ -7,19 +7,10 @@
     </button>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link" href="clientes.jsp">Clientes</a>
-            </li>
+        <ul class="navbar-nav mr-auto">               
             <li class="nav-item">
-                <a class="nav-link" href="vendedores.jsp">Vendedores</a>
-            </li>  
-            <li class="nav-item">
-                <a class="nav-link" href="productos.jsp">Productos</a>
-            </li> 
-            <li class="nav-item">
-                <a class="nav-link" href="ventas.jsp">Ventas</a>
-            </li>
+                <a class="nav-link" href="login.jsp">Login</a>
+            </li>           
         </ul>
     </div>
 </nav>

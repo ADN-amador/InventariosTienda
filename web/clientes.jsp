@@ -15,7 +15,7 @@
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.min.js" integrity="sha384-VHvPCCyXqtD5DqJeNxl2dtTyhF78xXNXdkwX1CZeRusQfRKp+tA7hAShOK/B/fQ2" crossorigin="anonymous"></script><!-- comment -->
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
-        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>F
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
         <title>Clientes</title>
         <style>            
             /*button{height: 50px; width: 75px;}*/   
@@ -385,7 +385,7 @@
             }
         </script>
         <%} else {%>
-    <center><a href="index.jsp">No se ha iniciado sesión o la sesión caducó, click acá para ingresar</a></center>
+    <center><a href="login.jsp">No se ha iniciado sesión o la sesión caducó, click acá para ingresar</a></center>
         <%}%>
 </body>
 <jsp:include page="footer.jsp"/>

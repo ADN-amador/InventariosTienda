@@ -301,7 +301,7 @@
             }
         </script>
         <%} else {%>
-    <center><a href="index.jsp">No se ha iniciado sesión o la sesión caducó, click acá para ingresar</a></center>
+    <center><a href="login.jsp">No se ha iniciado sesión o la sesión caducó, click acá para ingresar</a></center>
         <%}%>
 </body>
 <jsp:include page="footer.jsp"/>

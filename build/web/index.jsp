@@ -23,66 +23,38 @@
         </style>
     </head>
     <body>        
-        <jsp:include page="menu.jsp"/>
+        <jsp:include page="menuPublico.jsp"/>
         <!--<h1>Index</h1>-->
         <br>
-        <div class="container-fluid" ng-app="vendedores" ng-controller="vendedoresController as lc">
-            <div class="row">
-                <div class="col-4"></div>
-                <div class="col-4">
-                    <div class="row">
-                        <div class="col-12">
-                            <label>Usuario</label>
-                            <input type="text" class="form-control" ng-model="lc.usuario">                                   
-                        </div>
-                    </div>  
-                    <div class="row">
-                        <div class="col-12">
-                            <label>Contraseña</label>
-                            <input type="password" class="form-control" ng-model="lc.contrasenna"> 
-                        </div>
+        <div class="container-fluid">
+            <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                <ol class="carousel-indicators">
+                    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                </ol>
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img src="img/tienda03.jpg" class="d-block w-100" alt="...">
                     </div>
-                    <div class="row">
-                        <div class="col-12">
-                            <button type="button" class="btn btn-primary mt-2 btn-lg btn-block" ng-click="lc.iniciarSesion()">Iniciar Sesion</button>
-                        </div>
+                    <div class="carousel-item">
+                        <img src="img/tienda02.jpg" class="d-block w-100" alt="...">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="img/tienda01.jpg" class="d-block w-100" alt="...">
                     </div>
                 </div>
-                <div class="col-4"></div>
+                <button class="carousel-control-prev" type="button" data-target="#carouselExampleIndicators" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-target="#carouselExampleIndicators" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </button>
             </div>
-        </div>
+        </div> 
         <br>
-        <script>
-            var app = angular.module('vendedores', []);
-            app.controller('vendedoresController', ['$http', controladorVendedores]);
-            function controladorVendedores($http) {
-                var lc = this;
-                lc.iniciarSesion = function () {
-//                    alert(lc.usuario+' '+lc.contrasenna);
-                    var parametros = {
-                        proceso: 'iniciarSesion',
-                        usuario: lc.usuario,
-                        contrasenna: lc.contrasenna
-                    };
-                    $http({
-                        method: 'POST',
-                        url: 'peticionesVendedor.jsp',
-                        params: parametros
-                    }).then(function (res) {
-                        if (res.data.ok === true) {
-                            if (res.data.iniciarSesion === true) {
-//                                alert('Bienvenido '+lc.usuario);
-                                window.location.href = "vendedores.jsp";
-                            } else {
-                                alert('Verifique sus datos');
-                            }
-                        } else {
-                            alert(res.data.errorMsg);
-                        }
-                    });
-                };
-            }
-        </script>
     </body>
     <jsp:include page="footer.jsp"/>
 </html>

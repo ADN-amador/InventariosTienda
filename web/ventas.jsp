@@ -138,17 +138,17 @@
             <div class="row">
                 <div class="col-12">
                     <!--Seccion 3-->
-                   <hr>
+                    <hr>
                     <div class="row">
                         <div class="col-6">
-                            Venta o factura                            
-                        </div>                       
-                        <div class="col-3">
+                            <img src="img/logoD2-150.png" alt="logo" style="width:40px;">                           
+                        </div>               
+                       <div class="col-3">
                         </div>                       
                         <div class="col-3">
                             Nro. 000001                           
-                        </div>                       
-                    </div>
+                        </div>                        
+                    </div>                   
                     <hr>
                     <div class="row">                       
                         <div class="col-12">
@@ -193,8 +193,19 @@
                         <div class="col-3">
                             Total <input class="form-control1" type="text" placeholder="$">
                         </div>
+                    </div>                    
+                    <hr>
+                    <div class="row"> 
+                        <div class="col-6">
+                            Cliente:                           
+                        </div>                                               
                     </div>
                     <hr>
+                    <div class="row">                       
+                        <div class="col-6">
+                            Vendedor:
+                        </div> 
+                    </div>
                 </div>
             </div>
         </div>
@@ -223,7 +234,7 @@
             }
         </script>
         <%} else {%>
-    <center><a href="index.jsp">No se ha iniciado sesión o la sesión caducó, click acá para ingresar</a></center>
+    <center><a href="login.jsp">No se ha iniciado sesión o la sesión caducó, click acá para ingresar</a></center>
         <%}%>
     </body>
     <jsp:include page="footer.jsp"/>
