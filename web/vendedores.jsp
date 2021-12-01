@@ -43,10 +43,20 @@
                         <div class="col-6">
                             <label>IdVendedor</label>
                             <input class="form-control" type="text" placeholder="IdVendedor" ng-model="vc.idVendedor">
-                        </div>
+                        </div>                        
+                        <div class="col-6">
+                            <label>Usuario</label>
+                            <input class="form-control" type="text" placeholder="Usuario" ng-model="vc.usuario">
+                        </div>                        
+                    </div>
+                    <div class="row">                       
                         <div class="col-6">
                             <label>Nombre</label>
                             <input class="form-control" type="text" placeholder="Nombre" ng-model="vc.nombre">
+                        </div>
+                        <div class="col-6">
+                            <label>Contraseña</label>
+                            <input class="form-control" type="text" placeholder="Contraseña" ng-model="vc.contrasenna">
                         </div>
                     </div>
                     <div class="row">                       
@@ -78,10 +88,20 @@
                         <div class="col-6">
                             <label>IdVendedor</label>
                             <input class="form-control" type="text" disabled="" value="{{vc.idVendedor}}">
-                        </div>
+                        </div>                       
+                        <div class="col-6">
+                            <label>Usuario</label>
+                            <input class="form-control" type="text" disabled="" value="{{vc.usuario}}">
+                        </div>                       
+                    </div>
+                    <div class="row">                        
                         <div class="col-6">
                             <label>Nombre</label>
                             <input class="form-control" type="text" disabled="" value="{{vc.nombre}}">
+                        </div>
+                        <div class="col-6">
+                            <label>Contraseña</label>
+                            <input class="form-control" type="text" disabled="" value="{{vc.contrasenna}}">
                         </div>
                     </div>
                     <div class="row">                       
@@ -101,6 +121,8 @@
                                 <th scope="col">IdVendedor</th>
                                 <th scope="col">Nombre</th>                                
                                 <th scope="col">Telefono</th>                               
+                                <th scope="col">Usuario</th>                               
+                                <th scope="col">Contraseña</th>                               
                                 <th scope="col">Acciones</th>
                             </tr>
                         </thead>
@@ -109,6 +131,8 @@
                                 <td>{{v.idVendedor}}</td>
                                 <td>{{v.nombre}}</td>
                                 <td>{{v.telefono}}</td>                              
+                                <td>{{v.usuario}}</td>                              
+                                <td>{{v.contrasenna}}</td>                              
                                 <td>
                                     <button type="button" class="btn btn-outline-info" ng-click="vc.editar(v.idVendedor)">Editar</button>
                                 </td>
@@ -123,6 +147,29 @@
             app.controller('vendedoresController', ['$http', controladorVendedores]);
             function controladorVendedores($http) {
                 var vc = this;
+                validar = function (tipoDeValidacion) {
+                    var idVendedor = vc.idVendedor ? true : false;
+                    var nombre = vc.nombre ? true : false;
+                    var telefono = vc.telefono ? true : false;
+                    var usuario = vc.usuario ? true : false;
+                    var contrasenna = vc.contrasenna ? true : false;
+
+                    if (tipoDeValidacion === 'todosLosCampos') {
+                        if (idVendedor && nombre && telefono && usuario && contrasenna) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    } else if (tipoDeValidacion === 'soloIdVendedor') {
+                        if (idVendedor) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    } else {
+                        return false;
+                    }
+                };
                 vc.listar = function () {
                     var parametros = {
                         proceso: 'listar'
@@ -136,71 +183,87 @@
                     });
                 };
                 vc.guardar = function () {
-                    var parametros = {
-                        proceso: 'guardar',
-                        idVendedor: vc.idVendedor,
-                        nombre: vc.nombre,
-                        telefono: vc.telefono
-                    };
-                    $http({
-                        method: 'POST',
-                        url: 'peticionesVendedor.jsp',
-                        params: parametros
-                    }).then(function (res) {
-                        if (res.data.ok === true) {
-                            if (res.data.guardar === true) {
-                                alert('Guardó');
+                    if (validar('todosLosCampos')) {
+                        var parametros = {
+                            proceso: 'guardar',
+                            idVendedor: vc.idVendedor,
+                            nombre: vc.nombre,
+                            telefono: vc.telefono,
+                            usuario: vc.usuario,
+                            contrasenna: vc.contrasenna
+                        };
+                        $http({
+                            method: 'POST',
+                            url: 'peticionesVendedor.jsp',
+                            params: parametros
+                        }).then(function (res) {
+                            if (res.data.ok === true) {
+                                if (res.data.guardar === true) {
+                                    alert('Guardó');
+                                } else {
+                                    alert('No Guardó');
+                                }
                             } else {
-                                alert('No Guardó');
+                                alert(res.data.errorMsg);
                             }
-                        } else {
-                            alert(res.data.errorMsg);
-                        }
-                    });
+                        });
+                    } else {
+                        alert('Para guardar, todos los campos son requeridos');
+                    }
                 };
                 vc.actualizar = function () {
-                    var parametros = {
-                        proceso: 'actualizar',
-                        idVendedor: vc.idVendedor,
-                        nombre: vc.nombre,
-                        telefono: vc.telefono
-                    };
-                    $http({
-                        method: 'POST',
-                        url: 'peticionesVendedor.jsp',
-                        params: parametros
-                    }).then(function (res) {
-                        if (res.data.ok === true) {
-                            if (res.data.actualizar === true) {
-                                alert('Actualizó');
+                    if (validar('todosLosCampos')) {
+                        var parametros = {
+                            proceso: 'actualizar',
+                            idVendedor: vc.idVendedor,
+                            nombre: vc.nombre,
+                            telefono: vc.telefono,
+                            usuario: vc.usuario,
+                            contrasenna: vc.contrasenna
+                        };
+                        $http({
+                            method: 'POST',
+                            url: 'peticionesVendedor.jsp',
+                            params: parametros
+                        }).then(function (res) {
+                            if (res.data.ok === true) {
+                                if (res.data.actualizar === true) {
+                                    alert('Actualizó');
+                                } else {
+                                    alert('No Actualizó');
+                                }
                             } else {
-                                alert('No Actualizó');
+                                alert(res.data.errorMsg);
                             }
-                        } else {
-                            alert(res.data.errorMsg);
-                        }
-                    });
+                        });
+                    } else {
+                        alert('Para actualizar, todos los campos son requeridos');
+                    }
                 };
                 vc.eliminar = function () {
-                    var parametros = {
-                        proceso: 'eliminar',
-                        idVendedor: vc.idVendedor
-                    };
-                    $http({
-                        method: 'POST',
-                        url: 'peticionesVendedor.jsp',
-                        params: parametros
-                    }).then(function (res) {
-                        if (res.data.ok === true) {
-                            if (res.data.eliminar === true) {
-                                alert('Eliminó');
+                    if (validar('soloIdVendedor')) {
+                        var parametros = {
+                            proceso: 'eliminar',
+                            idVendedor: vc.idVendedor
+                        };
+                        $http({
+                            method: 'POST',
+                            url: 'peticionesVendedor.jsp',
+                            params: parametros
+                        }).then(function (res) {
+                            if (res.data.ok === true) {
+                                if (res.data.eliminar === true) {
+                                    alert('Eliminó');
+                                } else {
+                                    alert('No Eliminó');
+                                }
                             } else {
-                                alert('No Eliminó');
+                                alert(res.data.errorMsg);
                             }
-                        } else {
-                            alert(res.data.errorMsg);
-                        }
-                    });
+                        });
+                    } else {
+                        alert('Para eliminar, el Id Vendedor es requerido');
+                    }
                 };
                 vc.editar = function (idv) {
                     var parametros = {
@@ -215,6 +278,8 @@
                         vc.idVendedor = res.data.Vendedor.idVendedor;
                         vc.nombre = res.data.Vendedor.nombre;
                         vc.telefono = res.data.Vendedor.telefono;
+                        vc.usuario = res.data.Vendedor.usuario;
+                        vc.contrasenna = res.data.Vendedor.contrasenna;
                     });
                 };
                 vc.cerrarSesion = function () {
@@ -239,4 +304,5 @@
     <center><a href="index.jsp">No se ha iniciado sesión o la sesión caducó, click acá para ingresar</a></center>
         <%}%>
 </body>
+<jsp:include page="footer.jsp"/>
 </html>

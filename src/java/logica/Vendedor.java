@@ -118,6 +118,8 @@ public class Vendedor {
                 ven.setIdVendedor(rs.getInt("idVendedor"));
                 ven.setNombre(rs.getString("nombre"));                
                 ven.setTelefono(rs.getString("telefono"));              
+                ven.setUsuario(rs.getString("usuario"));              
+                ven.setContrasenna(rs.getString("contrasenna"));              
                 listarVendedores.add(ven);
             }
         } catch (SQLException ex) {
@@ -136,6 +138,8 @@ public class Vendedor {
             if (rs.next()) {
                 this.nombre = rs.getString("nombre");                
                 this.telefono = rs.getString("telefono");                
+                this.usuario = rs.getString("usuario");                
+                this.contrasenna = rs.getString("contrasenna");                
             } else {
                 return null;
             }
@@ -150,8 +154,8 @@ public class Vendedor {
     public boolean guardarVendedor() {
         ConexionBD conexion = new ConexionBD();
         String sql = "INSERT INTO vendedores\n"
-                + "(nombre, telefono)\n"
-                + "VALUES('" + this.nombre + "', " + this.telefono + ");";
+                + "(nombre, telefono, usuario, contrasenna)\n"
+                + "VALUES('" + this.nombre + "', '" + this.telefono + "', '" + this.usuario + "', '" + this.contrasenna + "');";
         if (conexion.setAutoCommitBD(false)) {
             if (conexion.insertarBD(sql)) {
                 conexion.commitBD();
@@ -171,7 +175,7 @@ public class Vendedor {
     public boolean actualizarVendedor() {
         ConexionBD conexion = new ConexionBD();
         String sql = "UPDATE vendedores\n"
-                + "SET nombre='" + this.nombre + "', telefono=" + this.telefono + "\n"
+                + "SET nombre='" + this.nombre + "', telefono='" + this.telefono + "', usuario='" + this.usuario + "', contrasenna='" + this.contrasenna + "'\n"
                 + "WHERE idVendedor=" + this.idVendedor + ";";
         if (conexion.setAutoCommitBD(false)) {
             if (conexion.actualizarBD(sql)) {

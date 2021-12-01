@@ -4,6 +4,7 @@
     Author     : Usuario
 --%>
 
+<%@page import="logica.Vendedor"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -22,14 +23,27 @@
             .form-control1{height: 38px; width: 150px;}
             .form-control2{height: 38px; width: 75px;}          
             li:hover{background-color: #1a1d20;}
+            @media print{
+                .p1, .p2, .s-on, .fr-on, .g-on, .c-on, .acth-on, .actd-on{display:none;}
+            }
         </style>
     </head>
     <body>
+        <%
+            Vendedor v = (Vendedor) session.getAttribute("usr");
+            if (v != null) {
+        %>
         <jsp:include page="menu.jsp"/>
-        <h1>Ventas</h1>
-        <div class="container-fluid">
+        <!--<h1>Ventas</h1>-->
+        <div class="container-fluid" ng-app="vendedores" ng-controller="vendedoresController as vntasc">
+            <div class="row mt-2 s-on">
+                <div class="col-10">Bienvenido/a: <%=v.getUsuario()%></div>
+                <div class="col-2">
+                    <button type="button" class="btn btn-outline-danger btn-block" ng-click="vntasc.cerrarSesion()">Cerrar sesión</button>
+                </div>
+            </div>
             <div class="row">
-                <div class="col-6">
+                <div class="col-6 p1">
                     <br>
                     Buscar Cliente
                     <div class="row">
@@ -76,7 +90,7 @@
                     </div>
                     <br>
                 </div>
-                <div class="col-6">
+                <div class="col-6 p2">
                     <br>
                     Buscar Cliente
                     <div class="row">
@@ -148,7 +162,7 @@
                                         <th scope="col">Precio</th>
                                         <th scope="col">Cantidad</th>
                                         <th scope="col">SubTotal</th>
-                                        <th scope="col">Acciones</th>
+                                        <th class="acth-on" scope="col">Acciones</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -159,7 +173,7 @@
                                         <td>1000</td>
                                         <td>5</td>
                                         <td>5000</td>
-                                        <td>
+                                        <td class="actd-on">
                                             <button type="button" class="btn btn-outline-info">Editar</button>
                                             <button type="button" class="btn btn-outline-danger">Eliminar</button>
                                         </td>
@@ -170,9 +184,9 @@
                     </div>                    
                     <hr>
                     <div class="row">                        
-                        <div class="col-6">                             
-                            <button type="button" class="btn btn-outline-success">Generar Venta</button>
-                            <button type="button" class="btn btn-outline-danger">Cancelar</button>
+                        <div class="col-6 ">                             
+                            <button type="button" class="btn btn-outline-success g-on" onclick="print()">Generar Venta</button>
+                            <button type="button" class="btn btn-outline-danger c-on">Cancelar</button>
                         </div>
                         <div class="col-3">                            
                         </div>
@@ -184,5 +198,33 @@
                 </div>
             </div>
         </div>
+        <script>
+            var app = angular.module('vendedores', []);
+            app.controller('vendedoresController', ['$http', controladorVendedores]);
+            function controladorVendedores($http) {
+                var vntasc = this;
+                
+                vntasc.cerrarSesion = function () {
+                    var parametros = {
+                        proceso: 'cerrarSesion'
+                    };
+                    $http({
+                        method: 'POST',
+                        url: 'peticionesVendedor.jsp',
+                        params: parametros
+                    }).then(function (res) {
+                        if (res.data.ok === true) {
+                            window.location.href = "ventas.jsp";
+                        } else {
+                            alert(res.data.errorMsg);
+                        }
+                    });
+                };
+            }
+        </script>
+        <%} else {%>
+    <center><a href="index.jsp">No se ha iniciado sesión o la sesión caducó, click acá para ingresar</a></center>
+        <%}%>
     </body>
+    <jsp:include page="footer.jsp"/>
 </html>

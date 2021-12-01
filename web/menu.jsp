@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark" >
     <a class="navbar-brand" href="index.jsp">
         <img src="logoD2-150.png" alt="logo" style="width:40px;">
     </a>

@@ -23,9 +23,8 @@
         </style>
     </head>
     <body>        
-        <%--<jsp:include page="menu.jsp"/>--%>
+        <jsp:include page="menu.jsp"/>
         <!--<h1>Index</h1>-->
-        <br>
         <br>
         <div class="container-fluid" ng-app="vendedores" ng-controller="vendedoresController as lc">
             <div class="row">
@@ -52,36 +51,38 @@
                 <div class="col-4"></div>
             </div>
         </div>
+        <br>
         <script>
             var app = angular.module('vendedores', []);
             app.controller('vendedoresController', ['$http', controladorVendedores]);
             function controladorVendedores($http) {
                 var lc = this;
-                lc.iniciarSesion = function () { 
+                lc.iniciarSesion = function () {
 //                    alert(lc.usuario+' '+lc.contrasenna);
                     var parametros = {
-                        proceso: 'iniciarSesion',                        
-                        usuario:lc.usuario,
-                        contrasenna:lc.contrasenna
+                        proceso: 'iniciarSesion',
+                        usuario: lc.usuario,
+                        contrasenna: lc.contrasenna
                     };
                     $http({
                         method: 'POST',
                         url: 'peticionesVendedor.jsp',
                         params: parametros
                     }).then(function (res) {
-                        if(res.data.ok===true){
-                            if(res.data.iniciarSesion===true){
+                        if (res.data.ok === true) {
+                            if (res.data.iniciarSesion === true) {
 //                                alert('Bienvenido '+lc.usuario);
-                                window.location.href="vendedores.jsp";
-                            }else{
+                                window.location.href = "vendedores.jsp";
+                            } else {
                                 alert('Verifique sus datos');
                             }
-                        }else{
+                        } else {
                             alert(res.data.errorMsg);
                         }
                     });
-                };                
+                };
             }
         </script>
     </body>
+    <jsp:include page="footer.jsp"/>
 </html>

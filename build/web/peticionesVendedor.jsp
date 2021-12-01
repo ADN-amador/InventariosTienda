@@ -42,9 +42,13 @@
             // creación de objeto y llamado a método guardar    
             String nombre = request.getParameter("nombre");
             String telefono = request.getParameter("telefono");
+            String usuario = request.getParameter("usuario");
+            String contrasenna = request.getParameter("contrasenna");
             Vendedor v = new Vendedor();
             v.setNombre(nombre);
             v.setTelefono(telefono);
+            v.setUsuario(usuario);
+            v.setContrasenna(contrasenna);
 
             if (v.guardarVendedor()) {
                 respuesta += "\"" + proceso + "\": true";
@@ -93,10 +97,14 @@
             int idVendedor = Integer.parseInt(request.getParameter("idVendedor"));
             String nombre = request.getParameter("nombre");
             String telefono = request.getParameter("telefono");
+            String usuario = request.getParameter("usuario");
+            String contrasenna = request.getParameter("contrasenna");
             Vendedor v = new Vendedor();
             v.setIdVendedor(idVendedor);
             v.setNombre(nombre);
             v.setTelefono(telefono);
+            v.setUsuario(usuario);
+            v.setContrasenna(contrasenna);
             if (v.actualizarVendedor()) {
                 respuesta += "\"" + proceso + "\": true";
             } else {

@@ -4,6 +4,7 @@
     Author     : Usuario
 --%>
 
+<%@page import="logica.Vendedor"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -22,9 +23,19 @@
         </style>        
     </head>
     <body>
+        <%
+            Vendedor v = (Vendedor) session.getAttribute("usr");
+            if (v != null) {
+        %>
         <jsp:include page="menu.jsp"/>
-        <h1>Productos</h1>       
+        <!--<h1>Productos</h1>-->       
         <div class="container-fluid" ng-app="productos" ng-controller="productosController as pc">
+            <div class="row mt-2">
+                <div class="col-10">Bienvenido/a: <%=v.getUsuario()%></div>
+                <div class="col-2">
+                    <button type="button" class="btn btn-outline-danger btn-block" ng-click="pc.cerrarSesion()">Cerrar sesión</button>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-6">
                     <!--Seccion 1-->
@@ -136,6 +147,29 @@
             app.controller('productosController', ['$http', controladorProductos]);
             function controladorProductos($http) {
                 var pc = this;
+                validar = function (tipoDeValidacion) {
+                    var idProducto = pc.idProducto ? true : false;
+                    var nombre = pc.nombre ? true : false;
+                    var descripcion = pc.descripcion ? true : false;
+                    var precio = pc.precio ? true : false;
+                    var stock = pc.stock ? true : false;
+
+                    if (tipoDeValidacion === 'todosLosCampos') {
+                        if (idProducto && nombre && descripcion && precio && stock) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    } else if (tipoDeValidacion === 'soloIdProducto') {
+                        if (idProducto) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    } else {
+                        return false;
+                    }
+                };
                 pc.listar = function () {
 //                  alert('Click en el botón listar');
                     var parametros = {
@@ -150,7 +184,8 @@
                     });
                 };
                 pc.guardar = function () {
-                    var parametros = {
+                    if(validar('todosLosCampos')){
+                        var parametros = {
                         proceso: 'guardar',
                         idProducto: pc.idProducto,
                         nombre: pc.nombre,
@@ -173,9 +208,13 @@
                             alert(res.data.errorMsg);
                         }
                     });
+                    }else{
+                        alert('Para guardar, todos los campos son requeridos');
+                    }
                 };
                 pc.actualizar = function () {
-                    var parametros = {
+                    if(validar('todosLosCampos')){
+                        var parametros = {
                         proceso: 'actualizar',
                         idProducto: pc.idProducto,
                         nombre: pc.nombre,
@@ -198,9 +237,13 @@
                             alert(res.data.errorMsg);
                         }
                     });
+                    }else{
+                        alert('Para actualizar, todos los campos son requeridos');
+                    }
                 };
                 pc.eliminar = function () {
-                    var parametros = {
+                    if(validar('soloIdProducto')){
+                        var parametros = {
                         proceso: 'eliminar',
                         idProducto: pc.idProducto
                     };
@@ -219,6 +262,9 @@
                             alert(res.data.errorMsg);
                         }
                     });
+                    }else{
+                        alert('Para eliminar, el Id Producto es requerido');
+                    }
                 };
                 pc.editar = function (idp) {
                     var parametros = {
@@ -237,7 +283,27 @@
                         pc.stock = res.data.Producto.stock;
                     });
                 };
+                pc.cerrarSesion = function () {
+                    var parametros = {
+                        proceso: 'cerrarSesion'
+                    };
+                    $http({
+                        method: 'POST',
+                        url: 'peticionesVendedor.jsp',
+                        params: parametros
+                    }).then(function (res) {
+                        if (res.data.ok === true) {
+                            window.location.href = "productos.jsp";
+                        } else {
+                            alert(res.data.errorMsg);
+                        }
+                    });
+                };
             }
         </script>
-    </body>
+        <%} else {%>
+    <center><a href="index.jsp">No se ha iniciado sesión o la sesión caducó, click acá para ingresar</a></center>
+        <%}%>
+</body>
+<jsp:include page="footer.jsp"/>
 </html>
